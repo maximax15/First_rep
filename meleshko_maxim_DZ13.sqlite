@@ -1,0 +1,46 @@
+CREATE TABLE departments (
+    ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    NAME VARCHAR(30)
+             );
+CREATE TABLE Employee (
+    ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    NAME VARCHAR(30),
+    DEPARTMENT_ID INT ,
+    ROLE VARCHAR(20),
+    MANAGER_ID INT,
+    FOREIGN KEY (DEPARTMENT_ID) REFERENCES departments(id)
+    );
+INSERT INTO departments(NAME) VALUES ('Managment');
+INSERT INTO departments(NAME) VALUES ('HRs');
+INSERT INTO departments(NAME) VALUES ('Sales');
+INSERT INTO departments(NAME) VALUES ('Software Development');
+INSERT INTO departments(NAME) VALUES ('Support');
+INSERT INTO departments(NAME) VALUES ('RND');
+
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE) VALUES ('James Smith', 1, 'CEO');
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Sarah Goldman', 1, 'CFO', 1 );
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Wayne Ablet', 1, 'CIO', 1 );
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Michelle Carey', 2, 'HR Manager', 1 );
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Chris Matthews', 3, 'Sakes Manager', 2 );
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Andrew Judy', 4, 'Development Manager', 3 );
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Daniele McLeon', 5, 'Support Manager', 3);
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Matthew Swan', 2, 'HR Representetive', 4);
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Stephania Richardson', 2, 'Salesperson', 5);
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Tony Stark', 3, 'Salesperson', 5);
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Jenna Locket', 4, 'Front-end Developer', 6);
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Michael Dunstall', 4, 'Back-end Developer', 6);
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Jane Voss', 4, 'Back-end Developer', 6);
+INSERT INTO Employee(NAME,ROLE,MANAGER_ID) VALUES ('Anthony Hird', 'Support', 7);
+INSERT INTO Employee(NAME,DEPARTMENT_ID,ROLE,MANAGER_ID) VALUES ('Natalie Rocca', 5, 'Support', 7)
+
+
+
+SELECT Employee.NAME, Employee.ROLE, departments.NAME
+FROM Employee LEFT JOIN departments  on Employee.DEPARTMENT_ID = departments.id
+SELECT Employee.name FROM Employee WHERE ID = (
+    SELECT MANAGER_ID
+    FROM Employee
+    WHERE NAME = 'Tony Stark'
+    );
+SELECT departments.NAME, Employee.name
+FROM Employee RIGHT JOIN departments on Employee.DEPARTMENT_ID = departments.id
