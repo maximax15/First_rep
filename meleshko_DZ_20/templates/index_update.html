@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактор заказов</title>
+    <link rel="stylesheet" href="/static/css/my_css_for_update.css">
+</head>
+<body>
+<div>
+    <form action="/update/{{ order.id }}" method="POST" id="updateForm">
+    <input type="hidden" name="_method" value="PUT">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" value="{{ order.name }}"><br>
+
+    <label for="cost">Cost:</label><br>
+    <input type="text" id="cost" name="cost" value="{{ order.cost }}"><br>
+
+    <label for="client_id">Client ID:</label><br>
+    <input type="text" id="client_id" name="client_id" value="{{ order.client_id }}"><br>
+
+    <button type="submit" class="update-button">Submit</button>
+</form>
+
+<script>
+    function function_for_put() {
+        var form = document.getElementById('updateForm');
+        var formData = new FormData(form);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/update/{{ order.id }}", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log('Updated successfully');
+                    // Обновить значения на странице
+                    document.getElementById('name').value = formData.get('name');
+                    document.getElementById('cost').value = formData.get('cost');
+                    document.getElementById('client_id').value = formData.get('client_id');
+                } else {
+                    console.error('Update failed');
+                }
+            }
+        };
+
+        xhr.send(new URLSearchParams(formData));
+    }
+</script>

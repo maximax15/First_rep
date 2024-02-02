@@ -51,9 +51,53 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
+def get_order(id):
+    session = Session()
+    get_id_order = session.get(Orders, id)
+    session.close()
+    return get_id_order
+
+
+
 def get_orders():
     session = Session()
     stmt = session.execute(select(Orders))
     my_orders = stmt.scalars().all()
     session.close()
     return my_orders
+
+
+def create_order(name, cost, client_id):
+    session = Session()
+    order = Orders(name=name, cost=cost, client_id=client_id)
+    session.add(order)
+    session.commit()
+    session.close()
+    return order
+
+
+def delete_order(id_order):
+    session = Session()
+    for order in session.query(Orders):
+        if order.id == id_order:
+            session.delete(order)
+    session.commit()
+    session.close()
+
+
+def update_order(id_order, name, cost, client_id):
+    session = Session()
+
+    get_id_order = session.get(Orders, id_order)
+    get_id_order.name = name
+    get_id_order.cost = cost
+    get_id_order.client_id = client_id
+    session.commit()
+
+    session.close()
+    return get_id_order
+
+
+
+
+

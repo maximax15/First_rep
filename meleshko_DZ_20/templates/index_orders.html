@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Главная страница | Сотрудники</title>
+    <link rel="stylesheet" href="/static/css/my.css">
+</head>
+<body class="my-class">
+<div class="orders-container">
+    <h1>Orders</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Cost</th>
+            <th>Client ID</th>
+            <th>Action</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.name }}</td>
+            <td>{{ order.cost }}</td>
+            <td>{{ order.client_id }}</td>
+            <td>
+                <button class="delete-button" onclick="function_for_delete_from_html({{ order.id }})">Delete</button>
+                <button class="update-button" onclick="function_for_update_in_html({{ order.id }})">Update</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div>
+    <h1>New Order</h1>
+    <form action="/" method="post">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="cost">Cost:</label><br>
+        <input type="text" id="cost" name="cost"><br>
+
+        <label for="client_id">Client ID:</label><br>
+        <input type="text" id="client_id" name="client_id"><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</div>
+</body>
+</html>
+<script>
+    function function_for_delete_from_html(client_id) {
+        fetch('/delete/' + client_id, {method: 'DELETE'})
+            .then(function () {
+                alert('А ты умеешь попадать по кнопке!');
+                location.reload();
+            })
+            .catch(function () {
+                alert('Ошибка');
+            });
+    }
+
+    function function_for_update_in_html(order_id) {
+        var url = '/update/' + order_id;
+
+        fetch(url, {
+            method: 'GET',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                var newWindow = window.open('/update/' + order_id, '_blank');
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+                alert('Ошибка');
+            });
+    }
+</script>
+
+
+
+
